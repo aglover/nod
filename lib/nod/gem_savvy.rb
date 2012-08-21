@@ -43,6 +43,8 @@ class GemSavvy
         get_sub_string(http_url, 'http://')
       elsif !http_url.nil? && http_url.include?('http://www.github.com')
         get_sub_string(http_url, 'http://www.')
+      elsif !http_url.nil? && http_url.include?('https://github.com')
+        get_sub_string(http_url, 'https://')
       else
         nil
       end

@@ -15,7 +15,6 @@ class Nod
   end
   
   def get_license_report_for_gem(name)
-    # puts "processing gem #{name}"
     url = @gem_savvy.git_clone_url name
     report = {}
     

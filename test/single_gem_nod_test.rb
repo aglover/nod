@@ -81,10 +81,26 @@ class SingleGemNodTest < Test::Unit::TestCase
   def test_single_gem_report_tilt
     savvy = GemSavvy.new
     
-    puts "#{savvy.info_for('tilt')}"
+    # puts "#{savvy.info_for('tilt')}"
     nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
     report = []
     report << nod.get_license_report_for_gem('tilt')
+    assert_not_nil report
+    assert_equal 'MIT', report[0][:gem_license]
+  end
+  
+  def test_single_gem_report_shoulda
+    nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
+    report = []
+    report << nod.get_license_report_for_gem('shoulda')
+    assert_not_nil report
+    assert_equal 'MIT', report[0][:gem_license]
+  end
+  
+  def test_single_gem_report_shoulda_matchers
+    nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
+    report = []
+    report << nod.get_license_report_for_gem('shoulda-matchers')
     assert_not_nil report
     assert_equal 'MIT', report[0][:gem_license]
   end
