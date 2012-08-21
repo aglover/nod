@@ -1,5 +1,5 @@
 #Nod
-###OSS License report generator
+###OSS License report generator for Ruby Gems
  
 Description
 -----------

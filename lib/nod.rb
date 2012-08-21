@@ -7,8 +7,8 @@ require 'fileutils'
 
 class Nod
   
-  def initialize()
-    @basedir = './tmp/git_repos'
+  def initialize(tmp_dir_to_write_to=nil)
+    @basedir = tmp_dir_to_write_to || './tmp/git_repos'
     @git_cloner = GitCloner.new('./tmp/filling-in')
     @gem_savvy = GemSavvy.new
   end
