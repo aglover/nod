@@ -9,10 +9,13 @@ class GitCloner
   end
   
   def clone_url(url, to_url)
+    # puts "cloning #{url} to #{to_url}"
     begin
-      @gritty.clone({:quiet => false, :verbose => true, :progress => true}, url, to_url)
+      @gritty.clone({:quiet => false, :verbose => true, :progress => true, :timeout => 320}, url, to_url)
       true
-    rescue
+    rescue Exception => e 
+      puts e.backtrace
+      puts e.to_s
       puts "couldn't clone #{url}"
       false
     end

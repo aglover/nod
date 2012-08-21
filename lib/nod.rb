@@ -25,6 +25,7 @@ class Nod
       if successful_clone && File.exists?(tmp_dir)
         files_in_repo = Dir.entries(tmp_dir)
         licenses_files = files_in_repo.select { |file_name| file_name if (file_name =~ /license/i || file_name =~ /readme/i || file_name =~ /copying/i)}
+        # puts "license files for gem #{name} are #{licenses_files}, tmp dir is #{tmp_dir}"
         if !licenses_files.nil? && licenses_files.size > 0
           licenses_files.each do | file |
             license_type = LicenseHunch.determine_license_from_file file, tmp_dir
@@ -36,8 +37,10 @@ class Nod
         else
           report = get_report name, url, 'Unknown'
         end
-     else
+      else
         # TODO handle this
+        info = @gem_savvy.info_for(name)
+        puts "info is #{info}"
         puts "in else? file didn't exist? gem is #{name}"
       end #file exists
     else

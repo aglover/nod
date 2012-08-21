@@ -14,6 +14,7 @@ class LicenseHunch
       # puts "line is #{line}"
       return 'MIT' if (line =~ /MIT License/i || line =~ /MIT/i || line =~ /mit-license/i)
       return 'Ruby License' if (line =~ /Ruby license/i)
+      return 'Apache' if (line =~ /Apache License/i)
     end
 
     all_text = File.open(file_path).read.gsub(/\n/,' ')
