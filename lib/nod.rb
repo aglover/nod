@@ -26,14 +26,14 @@ class Nod
         licenses = files_in_repo.select { |file_name| file_name if file_name =~ /license/i }
         # puts "licenses is #{licenses}"
         if !licenses.nil? && licenses.size > 0
-          license_type = LicenseHunch.determine_license_from_file licenses[0], File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
+          license_type = LicenseHunch.determine_license_from_file licenses[0], tmp_dir #File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
           report = {:gem_name => name, :gem_home_page => @gem_savvy.gem_home(name), :gem_source_url => url, :gem_license => license_type}
         else
           # puts "no license found for #{@gem_savvy.info_for(name)}"
           readme = files_in_repo.select { |file_name| file_name if file_name =~ /readme/i }
           if !readme.nil? && readme.size > 0
             # puts "\n\ngoing readme route with #{readme}"
-            license_type = LicenseHunch.determine_license_from_file readme[0], File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
+            license_type = LicenseHunch.determine_license_from_file readme[0], tmp_dir #File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
             # puts "got? #{license_type}"              
             report = {:gem_name => name, :gem_home_page => @gem_savvy.gem_home(name), :gem_source_url => url, :gem_license => license_type}
           end

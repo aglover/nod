@@ -9,7 +9,6 @@ class NodTest < Test::Unit::TestCase
     report = green_light.get_licenses_for gemfile_path
     report.each { |rep| puts rep }
     puts "report size is #{report.size}"
-
   end
   
 end
