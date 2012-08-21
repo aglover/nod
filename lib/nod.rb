@@ -4,6 +4,7 @@ require 'nod/git_cloner'
 require 'nod/license_hunch'
 require 'nod/bundle_parser'
 require 'fileutils'
+require 'open-uri'
 
 class Nod
   
@@ -18,37 +19,60 @@ class Nod
     url = @gem_savvy.git_clone_url name
     report = {}
     
+    tmp_dir = "#{@basedir}/#{name}"
     if !url.nil?
-      tmp_dir = "#{@basedir}/#{name}"
       successful_clone = @git_cloner.clone_url url, tmp_dir
       if successful_clone && File.exists?(tmp_dir)
         files_in_repo = Dir.entries(tmp_dir)
-        licenses = files_in_repo.select { |file_name| file_name if file_name =~ /license/i }
-        # puts "licenses is #{licenses}"
-        if !licenses.nil? && licenses.size > 0
-          license_type = LicenseHunch.determine_license_from_file licenses[0], tmp_dir #File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
-          report = {:gem_name => name, :gem_home_page => @gem_savvy.gem_home(name), :gem_source_url => url, :gem_license => license_type}
-        else
-          # puts "no license found for #{@gem_savvy.info_for(name)}"
-          readme = files_in_repo.select { |file_name| file_name if file_name =~ /readme/i }
-          if !readme.nil? && readme.size > 0
-            # puts "\n\ngoing readme route with #{readme}"
-            license_type = LicenseHunch.determine_license_from_file readme[0], tmp_dir #File.expand_path(File.dirname(__FILE__) + "/../#{tmp_dir}")
-            # puts "got? #{license_type}"              
-            report = {:gem_name => name, :gem_home_page => @gem_savvy.gem_home(name), :gem_source_url => url, :gem_license => license_type}
+        licenses_files = files_in_repo.select { |file_name| file_name if (file_name =~ /license/i || file_name =~ /readme/i || file_name =~ /copying/i)}
+        if !licenses_files.nil? && licenses_files.size > 0
+          licenses_files.each do | file |
+            license_type = LicenseHunch.determine_license_from_file file, tmp_dir
+            unless license_type.nil?
+              return get_report name, url, license_type
+            end
           end
+          report = get_report name, url, 'Unknown'
+        else
+          report = get_report name, url, 'Unknown'
         end
-      else
+     else
         # TODO handle this
         puts "in else? file didn't exist? gem is #{name}"
       end #file exists
     else
       info = @gem_savvy.info_for(name)
-      # puts "info for #{name} is #{info}"
-      report = {:gem_name => name, :gem_home_page => info['homepage_uri'], :gem_source_url => info['source_code_uri'], :gem_license => 'Cannot determine'}
+      license_type = get_license_from_home_page info['homepage_uri'], tmp_dir
+      report = {:gem_name => name, :gem_home_page => info['homepage_uri'], :gem_source_url => info['source_code_uri'], :gem_license => license_type }
     end
-    # puts "returning report for gem #{name} -> #{report}"
     return report
+  end
+  
+  def get_license_from_home_page(web_page, tmp_dir)
+    
+    if web_page.nil?
+      return nil
+    end
+    
+    unless web_page.start_with?('http://')
+      web_page = "http://#{web_page}"
+    end
+    
+    license_type = 'Cannot determine'
+    unless web_page.nil?
+      unless Dir.exists?(tmp_dir)
+        Dir.mkdir tmp_dir
+      end
+      File.open("#{tmp_dir}/webpage_source", 'w') do |file|
+        file << open(web_page).read
+      end
+      license_type = LicenseHunch.determine_license_from_file 'webpage_source', tmp_dir
+    end
+    license_type
+  end
+  
+  def get_report(gem_name, url, license_type)
+    {:gem_name => gem_name, :gem_home_page => @gem_savvy.gem_home(gem_name), :gem_source_url => url, :gem_license => license_type}
   end
   
   def get_licenses_for(gemfile_path)

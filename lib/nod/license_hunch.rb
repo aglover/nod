@@ -11,7 +11,9 @@ class LicenseHunch
     file_path = "#{base_path}/#{license_name}"
     is_mit_lic = false
     File.open(file_path, 'r').each_line do | line |
-      return 'MIT' if line =~ /MIT License/i
+      # puts "line is #{line}"
+      return 'MIT' if (line =~ /MIT License/i || line =~ /MIT/i || line =~ /mit-license/i)
+      return 'Ruby License' if (line =~ /Ruby license/i)
     end
 
     all_text = File.open(file_path).read.gsub(/\n/,' ')
@@ -23,7 +25,7 @@ class LicenseHunch
     phrase_5 = "distribute, sublicense"
     return 'MIT' if (all_text =~ /#{phrase_1}/i && all_text =~ /#{phrase_2}/i && all_text =~ /#{phrase_3}/i && all_text =~ /#{phrase_4}/ && all_text =~ /#{phrase_5}/ ) 
 
-    return 'Unknown'
+    return nil
 
   end
   
