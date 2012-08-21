@@ -3,7 +3,7 @@ require 'nod'
 require 'nod/gem_savvy'
 class SingleGemNodTest < Test::Unit::TestCase
   
-  def test_single_gem_report
+ def test_single_gem_report
     nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
     report = []
     report << nod.get_license_report_for_gem('active_directory')
@@ -59,14 +59,33 @@ class SingleGemNodTest < Test::Unit::TestCase
     assert_equal 'MIT', report[0][:gem_license]
   end
   
-  # def test_single_gem_report_libxml_mongo
-  #     savvy = GemSavvy.new
-  #     
-  #     puts "#{savvy.info_for('mongo')}"
-  #     nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
-  #     report = []
-  #     report << nod.get_license_report_for_gem('mongo')
-  #     assert_not_nil report
-  #     assert_equal 'Apache', report[0][:gem_license]
-  #   end
+  def test_single_gem_report_gems
+ 
+    nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
+    report = []
+    report << nod.get_license_report_for_gem('gems')
+    assert_not_nil report
+    assert_equal 'MIT', report[0][:gem_license]
+  end
+  
+  def test_single_gem_report_mongo
+    savvy = GemSavvy.new
+    
+    nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
+    report = []
+    report << nod.get_license_report_for_gem('mongo')
+    assert_not_nil report
+    assert_equal 'Apache', report[0][:gem_license]
+  end
+  
+  def test_single_gem_report_tilt
+    savvy = GemSavvy.new
+    
+    puts "#{savvy.info_for('tilt')}"
+    nod = Nod.new(File.expand_path(File.dirname(__FILE__) + '/tmp/nod/all_gems'))
+    report = []
+    report << nod.get_license_report_for_gem('tilt')
+    assert_not_nil report
+    assert_equal 'MIT', report[0][:gem_license]
+  end
 end

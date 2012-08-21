@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nod (0.0.5)
+    nod (0.0.6)
       bundler (~> 1.0.21)
       gems (~> 0.7.0)
       grit (~> 2.5.0)

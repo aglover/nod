@@ -30,7 +30,7 @@ class GemSavvyTest < Test::Unit::TestCase
       
     end
     
-    assert_equal 8, count
+    assert_equal 6, count
     
   end
   

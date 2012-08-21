@@ -33,18 +33,27 @@ class GemSavvy
   
   def git_clone_url(gem_name)
     http_url = gem_home gem_name
-    if !http_url.nil? && http_url.include?('http://github.com')
-        "#{http_url.gsub('http://', 'git://')}.git"
+    if !http_url.nil? && http_url.include?('http://github.com') 
+      get_sub_string(http_url, 'http://')
+    elsif !http_url.nil? && http_url.include?('https://github.com')
+      get_sub_string(http_url, 'https://')
     else
       http_url = gem_source_home gem_name
       if !http_url.nil? && http_url.include?('http://github.com')
-        "#{http_url.gsub('http://', 'git://')}.git"
+        get_sub_string(http_url, 'http://')
       elsif !http_url.nil? && http_url.include?('http://www.github.com')
-        "#{http_url.gsub('http://www.', 'git://')}.git"
+        get_sub_string(http_url, 'http://www.')
       else
         nil
       end
     end
+  end
+  
+  def get_sub_string(http_url, to_replace)
+    if http_url.end_with?('/')
+      http_url = http_url[0..-2]
+    end
+    "#{http_url.gsub(to_replace, 'git://')}.git"
   end
   
 end
