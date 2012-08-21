@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'green_light/gem_savvy'
-require 'green_light/git_cloner'
-require 'green_light/license_hunch'
-require 'green_light/bundle_parser'
+require 'nod/gem_savvy'
+require 'nod/git_cloner'
+require 'nod/license_hunch'
+require 'nod/bundle_parser'
 require 'fileutils'
 
-class GreenLight
+class Nod
   
   def initialize()
     @basedir = './tmp/git_repos'

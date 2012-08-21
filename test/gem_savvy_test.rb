@@ -1,6 +1,6 @@
 require 'test/unit'
-require 'green_light/gem_savvy'
-require 'green_light/bundle_parser'
+require 'nod/gem_savvy'
+require 'nod/bundle_parser'
 
 class GemSavvyTest < Test::Unit::TestCase
   
