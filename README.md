@@ -1,4 +1,4 @@
-#Green Light
+#Nod
 ###OSS License report generator
  
 Description
@@ -7,4 +7,4 @@ This gem produces a report from a list of gems (either provided via a Gemfile.lo
 
 Installation
 ------------
-    gem install green_light
+    gem install nod
