@@ -1,0 +1,37 @@
+source 'http://rubygems.org'
+
+gem 'CFPropertyList'
+gem 'mongoid', '~> 2.4'
+gem 'mongo', '>= 1.6.0'
+gem 'bson_ext'
+gem 'right_aws'
+gem 'work_queue'
+gem 'class_loader', '= 0.4.15'
+gem 'json'
+gem 'activesupport'
+gem 'i18n'
+gem 'rubyzip'
+gem 'mimetype-fu'
+gem 'ruby-gmail'
+gem 'mime'
+gem 'mail'
+gem 'rake'
+gem 'resque'
+gem 'ruby-ldap' #note, you'll need to run: sudo apt-get install libsasl2-dev
+gem 'net-ldap'
+gem 'haml'
+# gem 'activedirectory'
+gem 'active_directory', :git => 'git@github.com:App47/active_directory.git'
+
+group :test do
+  gem 'test-unit'
+  gem 'shoulda'
+  gem 'shoulda-context'
+  gem 'mocha'
+  gem 'simplecov'
+end
+
+group :development do
+  gem 'guard-test'
+  gem 'growl'
+end
